@@ -166,15 +166,12 @@ func DeepEqualAS3ArbitraryJsonObject(obj1, obj2 map[string]interface{}) bool {
 func getTenants(decl as3Declaration) []string {
 
 	var tmpl interface{}
-	if decl != "" {
-		err := json.Unmarshal([]byte(decl), &tmpl)
-		if err != nil {
-			log.Errorf("[AS3] JSON unmarshal failed: %v  %v", err, decl)
-			return nil
-		}
-	} else {
+	err := json.Unmarshal([]byte(decl), &tmpl)
+	if err != nil {
+		log.Errorf("[AS3] JSON unmarshal failed: %v  %v", err, decl)
 		return nil
 	}
+
 	// extract as3 declaration from template
 	dclr := (tmpl.(map[string]interface{}))["declaration"]
 	if dclr == nil {
